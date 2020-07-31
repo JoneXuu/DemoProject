@@ -1,0 +1,105 @@
+/* 颜色变量 */
+
+/* 行为相关颜色 */
+$colTheme: #642fb5;
+// $colThemeOp: #642fb5;
+$colYellow: #f0ad4e;
+$colPaleGreen: #4cd964;
+$colBlue: #4e9ef0;
+$colGreen: #1aad19;
+$colBlack: #333333;
+$colRed: #dd524d;
+$colWhite: #ffffff;
+$colGray:#adadad;//辅助灰色，如加载更多的提示信息
+$colGrey:#c0c0c0;
+$colGolden:#ffc000;
+
+/* 背景颜色 */
+$bgWhite:#ffffff !default;
+$bgGray:#f3f3f3;
+$bgBlack:#444444;
+$bgMask:rgba(0, 0, 0, 0.4);//遮罩颜色
+
+/* 文字*/
+$fontSM:10px;
+$fontBS:13px;
+$fontLG:16px;
+$fontXL:20px;
+$lineHeightSM:16px;
+$lineHeightBS:26px;
+$lineHeightLG:36px;
+
+/* 图片尺寸 */
+$imgSM:30px;
+$imgBS:50px;
+$imgLG:80px;
+
+/* Border Radius */
+$radiusSM: 5px;
+$radiusBS: 10px;
+$radiusLG: 20px;
+$radiusRound: 50%;
+
+/* 边框颜色 */
+$colBorder:#c8c7cc;
+
+/* 水平间距 */
+$marginSM: 5px;
+$marginBS: 10px;
+$marginLG: 20px;
+$marginXL: 30px;
+
+
+@mixin bgWhite(){
+  background-color:$bgWhite;
+  color:$colBlack;
+  [data-theme="1"] & {
+    background-color:$colBlack;
+	color:$colWhite;
+  }
+  // [data-theme="2"] & {
+  //   background-color:$bgWhite;
+  //   color:$colBlack;
+  // }
+}
+@mixin bgTheme(){
+  background-color: $colTheme;
+  color:$colWhite;
+  [data-theme="1"] & {
+	   background-color:$colBlue;
+	   color:$colWhite;
+  }
+  [data-theme="2"] & {
+    background-color:$colYellow;
+	color:$colWhite;
+  }
+}
+@mixin colTheme(){
+  color:$colTheme;
+  [data-theme="1"] & {
+	   color:$colBlue;
+  }
+  [data-theme="2"] & {
+	color:$colYellow;
+  }
+}
+
+@mixin pageBg(){
+  background-color:$bgGray;
+  color:$colBlack;
+  [data-theme="1"] & {
+	   background-color:$bgBlack;
+	   color:$colWhite;
+  }
+  [data-theme="2"] & {
+    background-color:$colPaleGreen;
+	color:$colWhite;
+  }
+}
+.GFlex{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	flex-wrap: wrap;
+}
