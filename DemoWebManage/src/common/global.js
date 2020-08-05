@@ -1,33 +1,9 @@
-// var domain = 'http://127.0.0.1/TCSC/',
-// var domain = 'http://192.168.1.110/tcsc/',
-// var domain = 'http://47.110.142.63/TCSC/',
-var domain = 'https://labboxwx.tcsoft.net.cn/',
+
+var domain = 'https://www.mxnzp.com/',
 	fileDomain = domain+'Images/';
-var common = {
-	themeColor: "#007aff",
-	appName: 'TCSC',
-}
+
 var defaultImg='this.src="' + require('@/assets/logo.jpg') + '"';
-var uploadUrl=domain+"UploadPhoto.ashx?folder=Image&fileName=test.png";
-
-var SexOption=['保密','男','女'];
-var MenuTypeOption=['未指定','首页导航','工具导航','管理导航'];
-var netList=['http://192.168.1.110/tcsc/',"https://labboxwx.tcsoft.net.cn/"];
-
-function sureDomain(){
-	let urlInd=uni.getStorageSync('appDomain');
-	// console.log('缓存domain1--',urlInd,typeof(urlInd));
-	if(urlInd){
-		domain=netList[parseInt(urlInd)];
-		fileDomain = domain+'Images/';
-	}else{
-		uni.setStorage({
-			key:"appDomain",
-			data:"1"
-		})
-	}
-}
-// sureDomain();
+var uploadUrl=domain+"UploadPhoto.ashx";
 
 var hasAction = false; //有操作正在进行
 function noAction() { //
@@ -165,13 +141,6 @@ function hideMobile(phone) {
 	return result;
 }
 
-function navTo(str) {
-	if (noAction()) {
-		uni.navigateTo({
-			url: str,
-		});
-	}
-}
 
 function isEmpty(keyArr,obj) {
 	let reKey=false;
@@ -208,18 +177,12 @@ function formatMinutes(minutes) {
 
 export default {
 	domain,
-	common,
 	fileDomain,
   defaultImg,
   uploadUrl,
-	SexOption,
-	MenuTypeOption,
-	netList,
 	toast,
-	navTo,
 	hideMobile,
 	isEmpty,
-	sureDomain,
 	formatNumber,
 	formatImage,
 	formatTime,

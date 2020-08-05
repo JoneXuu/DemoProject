@@ -98,64 +98,7 @@
 </template>
 
 <script>
-  const tbMainHead = [{
-      title: '图片',
-      dataIndex: 'AvatarUrl',
-      scopedSlots: {
-        customRender: 'pic'
-      },
-    },
-    {
-      title: '昵称',
-      dataIndex: 'NickName',
-    },
-    {
-      title: '姓名',
-      dataIndex: 'UserName',
-    },
-    {
-      title: '手机号',
-      dataIndex: 'TelephoneNumber',
-    },
-    {
-      title: '邮箱',
-      dataIndex: 'Email',
-    },
-    {
-      title: '是否绑定微信',
-      dataIndex: 'IsBindingWechat',
-      customRender: (text, row, index) => {
-        if (text) {
-          return "是";
-        }
-        return '否';
-      },
-    }
-  ];
-  const formRule={
-        NickName: [{
-          required: true,
-          message:"昵称不能为空",
-          trigger: 'change'
-        }],
-        UserName: [{
-            required: true,
-            message:"用户名不能为空",
-            trigger: 'blur'
-          },
-          {
-            min: 2,
-            max: 5,
-            message: '姓名长度需在2到5个字符',
-            trigger: 'blur'
-          },
-        ],
-        TelephoneNumber: [{
-          required: true,
-          message:"手机号不能为空",
-          trigger: 'change'
-        }],
-      }
+
   export default {
     data() {
       return {
@@ -185,7 +128,7 @@
       submitData() {
         this.$refs.checkForm.validate(valid => {
           if (valid) {
-            console.log('check ok, to submit');
+            this.$global.toast('提交成功')
             console.log(this.formData);
           } else {
             console.log('error submit!!');
@@ -194,25 +137,18 @@
         });
       },
       getData() {
-        this.$http.postHttp("GetUserList",{
-					OrganizationID:1,
-					PageIndex:1,
-					PageSize:20,
-					ConditionField:"",
-					ConditionValue:"",
-				}, (res) => {
+        // this.$http.getHttp("address/list",{
+        //   "app_id":"wgnjhlfwlnirjhqg",
+        //   "app_secret":"KzlhN1VWVmFiSFIvK2ZPQ0xGS3hoUT09"
+        // }, (res) => {
           // console.log("返回结果", res);
-          if(res){
-            res.map(item=>{
-              if(item.HeadImage){
-                item.AvatarUrl=this.$global.formatImage(item.HeadImage);
-              }
-              item.Birthdate=this.$global.formatTime(item.Birthdate);
-            })
-            this.tbMainData=res
-          }
+          // if(res.data){
+            //因为接口不开放了，我们假设数据如下
+            let endData=virtualData;
+            this.tbMainData=endData;
+          // }
 
-        })
+        // })
       },
       showAddNew() {
         this.formData = {};
@@ -247,12 +183,127 @@
           this.previewImgList=[]
         }else if(status=="done"){
           this.formData.AvatarUrl = e.file.response.data;
+          this.$global.toast('需自行配置上传地址','error')
+          // 要配置action的那个地址,方可上传成功
         }else{
           this.previewImgList=e.fileList;
         }
       }
     }
   }
+  const formRule={
+        NickName: [{
+          required: true,
+          message:"昵称不能为空",
+          trigger: 'change'
+        }],
+        UserName: [{
+            required: true,
+            message:"用户名不能为空",
+            trigger: 'blur'
+          },
+          {
+            min: 2,
+            max: 5,
+            message: '姓名长度需在2到5个字符',
+            trigger: 'blur'
+          },
+        ],
+        TelephoneNumber: [{
+          required: true,
+          message:"手机号不能为空",
+          trigger: 'change'
+        }],
+      }
+const tbMainHead = [{
+      title: '图片',
+      dataIndex: 'AvatarUrl',
+      scopedSlots: {
+        customRender: 'pic'
+      },
+    },
+    {
+      title: '昵称',
+      dataIndex: 'NickName',
+    },
+    {
+      title: '姓名',
+      dataIndex: 'UserName',
+    },
+    {
+      title: '手机号',
+      dataIndex: 'TelephoneNumber',
+    },
+    {
+      title: '邮箱',
+      dataIndex: 'Email',
+    },
+    {
+      title: '是否绑定微信',
+      dataIndex: 'IsBindingWechat',
+      customRender: (text, row, index) => {
+        if (text) {
+          return "是";
+        }
+        return '否';
+      },
+    }
+  ];
+ const virtualData=[
+    {
+      AvatarUrl: "",
+      Birthdate: "2020-07-30T00:00:00",
+      Email: "jone@xu.com",
+      IsBindingWechat: 1,
+      NickName: "李哈哈",
+      OrgAddress: "",
+      OrganizationName: "大运公司",
+      Sex: 0,
+      TelephoneNumber: "13764908888",
+      UserID: 10,
+      UserName: "李浩天",
+    },
+    {
+      AvatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJHowzSCODAQpk8XVwJ6I0xSlbcxl9CicG8MF2v5wbOwDPg1lrtHicGeAX9jnuj7djNFSgyzQyjaHTA/132",
+      Birthdate: "2020-07-21T00:00:00",
+      Email: "",
+      IsBindingWechat: 0,
+      NickName: "丽莎",
+      OrgAddress: "市中心第一中学",
+      OrganizationName: "丽莎科技有限公司",
+      Sex: 0,
+      TelephoneNumber: "18621067777",
+      UserID: 5,
+      UserName: "李丽莎",
+    },
+    {
+      AvatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/I1R7oGkDmibXqx3OZpu0dGvlEH7egFlDo30iaqKFPiasnqKMJ4Fkuy53KyuNcQI7Ww1O6azR4gibSufjsURt6icZwUQ/132",
+      Birthdate: "2020-07-21T00:00:00",
+      Email: "",
+      IsBindingWechat: 0,
+      NickName: "浩南",
+      OrgAddress: "123",
+      OrganizationName: "昊天有限公司",
+      Sex: 0,
+      TelephoneNumber: "18621066666",
+      UserID:14,
+      UserName: "张浩",
+    },
+    {
+      AvatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/w9q1wKzzzNmBh6OgfAORibicSgFCA85RaljPeQrEiauJNokPtSVlbZRSzf19S6JUia0ZAax8HS0niaGq7FOXicNS22ZA/132",
+      Birthdate: "2020-07-21T00:00:00",
+      Email: "124124@139.com",
+      IsBindingWechat: 0,
+      NickName: "神罚",
+      OrgAddress: "街道办事处",
+      OrganizationName: "无言有限公司",
+      Sex: 0,
+      TelephoneNumber: "18621065555",
+      UserID: 12,
+      UserName: "周生生",
+    }
+ ]
+
 </script>
 
 <style lang="scss" scoped>

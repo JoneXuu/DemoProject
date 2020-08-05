@@ -1,7 +1,7 @@
 {
-  "name": "tcscweb",
+  "name": "webManage",
   "version": "1.0.0",
-  "description": "腾程Web管理系统",
+  "description": "Web管理系统",
   "author": "JoneXuu <jonexu@139.com>",
   "private": true,
   "scripts": {

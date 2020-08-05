@@ -20,7 +20,7 @@ function hideLoading(){
 function uploadFile(fileOrg, callback) {
 	showLoading();
 	uni.uploadFile({
-		url: Global.domain+"UploadPhoto.ashx?folder=Image&fileName="+fileOrg,
+		url: Global.uploadUrl+"?folder=Image&fileName="+fileOrg,
 		filePath: fileOrg,
 		name: "file",
 		success: (res) => {
@@ -30,7 +30,6 @@ function uploadFile(fileOrg, callback) {
 				callback(obj.data);
 			}else{
 				Global.toast("文件上传失败")
-				console.log(res);
 				callback(false);
 			}
 		},
@@ -44,58 +43,32 @@ function uploadFile(fileOrg, callback) {
 	});
 }
 
-function requestHttpCommon(api,sendData,met,code, callback) {
+function requestHttpCommon(api,sendData,met, callback) {
 
-	if (typeof(sendData) == "string") {
-		// sendData = "'" + sendData + "'";
-	} else {
-		sendData = JSON.stringify(sendData)
+	if (typeof(sendData) == "object") {
+		 sendData = JSON.stringify(sendData)
 	}
-	// console.log(sendData,Global.domain+"AppService.ashx");
 	axios({
-		url: Global.domain+"AppService.ashx",
+		url: Global.domain+"api/"+api,
 		method:met,
-		data: qs.stringify({
-		  SystemCode: code,
-		  MethodName: api,
-		  RequestContent: sendData
-		}),
-		header:  {
-        'Content-Type':'application/x-www-form-urlencoded'
-		},
+    //发送json数据用这个
+		data: sendData,
+    header:  {
+        'Content-Type':'application/json',
+        // "app_id":"wgnjhlfwlnirjhqg",
+        // "app_secret":"KzlhN1VWVmFiSFIvK2ZPQ0xGS3hoUT09"
+    },
+  //   发送form-data请求用这个
+		// data: qs.stringify(RequestContent: sendData),
+		// header:  {
+  //       'Content-Type':'application/x-www-form-urlencoded'
+		// },
 		timeout:20000,
 	}).then((res) =>{
-     // console.log(res,'httpSuccess');
+     console.log(res,'httpSuccess');
      if (res.status >= 200&&res.status<300) {
      	let endResult=res.data;
-     	try{
-     		// endResult.IsSuccess=false;
-     		if(endResult.ErrorID=="0"){//真成功
-     			// endResult.IsSuccess=true;
-     			if(endResult.data){
-     				callback(endResult.data);
-     			}else{
-     				callback(true);
-     			}
-     		}else{
-     			if(endResult.ErrorString){
-     				let noShowStr=["未注册","无导航"];
-     				if(noShowStr.indexOf(endResult.ErrorString)==-1){
-     					Global.toast(endResult.ErrorString);
-     				}
-     			}else{
-     				Global.toast('操作失败');
-     			}
-     			if(endResult.data){
-     				callback(endResult.data)
-     			}else{
-     				callback(false)
-     			}
-     		}
-     	}catch(e){
-     		console.error('catchHttpError',e);
-     		callback(false);
-     	}
+     	callback(endResult)
      }
      else{
      	Global.toast("ErrorCode:" + res.statusCode);
@@ -110,21 +83,22 @@ function requestHttpCommon(api,sendData,met,code, callback) {
 function postHttp(api, sentData, callback) {
 	let arrApi=api.split(";");
 	let isNeedNotice=true;
-	if(arrApi.length>1){//api分号后面拼接就表示不要通知
+	if(arrApi.length>1){//api分号后面拼接false就表示不要通知
 		isNeedNotice=false;
 		api=arrApi[0];
 	}else{
-		// console.log(api);
 		showLoading();
 	}
-	requestHttpCommon(api, sentData,'POST','TCSC', function(reDa) {
+	requestHttpCommon(api, sentData,'POST', function(reDa) {
 		callback(reDa);
-		hideLoading();
+    if(isNeedNotice){
+      hideLoading();
+    }
 	});
 }
 
 function getHttp(api, sentData, callback) {
-	if(typeof(sentData)!="string"){
+	if(typeof(sentData)=="object"){
 		let i=0;
 		for(let key in sentData){
 			if(i==0){
@@ -136,7 +110,7 @@ function getHttp(api, sentData, callback) {
 			i++;
 		}
 	}
-	requestHttpCommon(api, sentData,'Get','TCSC', function(reDa) {
+	requestHttpCommon(api, sentData,'Get', function(reDa) {
 		callback(reDa);
 	});
 }
@@ -144,21 +118,15 @@ function getHttp(api, sentData, callback) {
 
 function freeHttp(api, sendData, callback) {
 
-	var head = {
-        'Content-Type':'application/x-www-form-urlencoded'
-		// 'content-type': 'application/json',
-		// 'Access-Control-Allow-Origin':'*'
-    };
-	// if (typeof(sendData) == "string") {
-	// 	sendData = "'" + sendData + "'";
-	// } else {
-	// 	sendData = JSON.stringify(sendData)
-	// }
 	uni.request({
 		url: api,
 		method:"POST",
 		data:sendData,
-		header: head,
+		header: {
+       'Content-Type':'application/x-www-form-urlencoded'
+		// 'content-type': 'application/json',
+		// 'Access-Control-Allow-Origin':'*'
+    },
 		timeout:60000,
 		fail: (res) => {
 			Global.toast("网络连接失败,请稍后再试");

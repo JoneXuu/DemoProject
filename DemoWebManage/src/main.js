@@ -12,7 +12,7 @@ import Antd from 'ant-design-vue';
 
 import 'ant-design-vue/dist/antd.css';
 import '@/common/style/global.scss';
-import '../uni.scss';
+// import '../config.scss';
 
 Vue.config.productionTip = false
 Vue.prototype.$http = https;

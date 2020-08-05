@@ -121,8 +121,8 @@
 				this.loading=false
 			},500)
       //Message,页面顶部的通知
-      this.$message.success('Click Me', 2.5, ()=>{//带callback的 
-              //this.$message.warning("上一个关闭了");//普通的 
+      this.$message.success('感谢您的使用', 2.5, ()=>{//带callback的
+            this.$message.warning("感兴趣的话，给个Start吧");//普通的
        });
 		},
 		methods: {

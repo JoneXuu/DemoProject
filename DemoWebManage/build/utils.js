@@ -63,7 +63,7 @@ exports.cssLoaders = function (options) {
     scss: generateLoaders('sass').concat({
         loader: 'sass-resources-loader',
         options: {
-          resources: path.resolve(__dirname, '../uni.scss') 
+          resources: path.resolve(__dirname, '../config.scss') 
         }
       }
     ),
