@@ -65,7 +65,7 @@ function requestHttpCommon(api,sendData,met, callback) {
 		// },
 		timeout:20000,
 	}).then((res) =>{
-     console.log(res,'httpSuccess');
+     // console.log(res,'httpSuccess');
      if (res.status >= 200&&res.status<300) {
      	let endResult=res.data;
      	callback(endResult)
