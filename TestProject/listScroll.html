@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<title>列表滚动Demo</title>
+		<style type="text/css">
+			.JTableBody {
+				width: 200px;
+				height: 90px;
+				overflow-y: scroll;
+				position: relative;
+				padding: 0;
+				margin: 0;
+				background-color: #7890a6;
+				/* box-sizing: border-box; */
+				border: 5px solid #18c86c;
+			}
+
+			.oneBodyRow {
+				width: 100%;
+				height: 30px;
+				line-height: 30px;
+				box-sizing: border-box;
+				position: relative;
+				z-index: 2;
+				background-color: #fff0fe;
+				text-align: center;
+			}
+
+			.oneBodyRow:nth-child(even) {
+				background-color: #3c3c3b;
+				color: #ffffff;
+			}
+
+			.noScrollBar::-webkit-scrollbar {
+				width: 0 !important;
+				height: 0 !important;
+			}
+
+			.noScrollBar {
+				-ms-overflow-style: none;
+			}
+
+			.noScrollBar {
+				overflow: -moz-scrollbars-none;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="JTableBody noScrollBar" id="scrollContent">
+			<div class="oneBodyRow" id="firstLine">第1行</div>
+			<div class="oneBodyRow">第2行</div>
+			<div class="oneBodyRow">第3行</div>
+			<div class="oneBodyRow">第4行</div>
+			<div class="oneBodyRow">第5行</div>
+			<div class="oneBodyRow">第6行</div>
+		</div>
+	</body>
+	<script>
+		function domReady(fn) {
+			if (document.addEventListener) { //标准浏览器
+				document.addEventListener('DOMContentLoaded', function() {
+					//注销时间，避免重复触发
+					document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+					fn(); //运行函数
+				}, false);
+			} else if (document.attachEvent) { //IE浏览器
+				document.attachEvent('onreadystatechange', function() {
+					if (document.readyState == 'complete') {
+						document.detachEvent('onreadystatechange', arguments.callee);
+						fn(); //函数运行
+					}
+				});
+			}
+		}
+
+		function jsScroll() {
+			//直接利用js实现，有点卡的感觉，没有动画，效果不佳，只提供思路，可以再琢磨优化
+			var isStop = false;
+			var cont = document.getElementById("scrollContent");
+			cont.scrollTop = 0;
+			cont.onmouseover = function() {
+				isStop = true;
+			}
+			cont.onmouseout = function() {
+				isStop = false;
+			}
+
+			function startScroll() {
+				if (isStop) {
+					console.log("暂停中");
+				} else {
+					if (cont.scrollTop >= (cont.scrollHeight - cont.offsetHeight)) {
+						cont.scrollTop = 0;
+					} else {
+						cont.scrollTop = parseInt(cont.scrollTop) + rowHei;
+					}
+				}
+			}
+			setTimeout(fn => {
+				clearInterval(tbTimer);
+				tbTimer = setInterval(startScroll, speed);
+			}, delay)
+		}
+
+		function cssScroll() {
+			//此方法使用css模拟列表滚动，带有动画效果，推荐使用
+			var isStop = false;
+			var cont = document.getElementById('firstLine');
+			if (cont) {
+				var parCont = document.getElementById('scrollContent');
+				var maxMargin = parCont.offsetHeight - parCont.scrollHeight;
+				parCont.onmouseover = function() {
+					isStop = true;
+				} //鼠标移入，停止滚动
+				parCont.onmouseout = function() {
+					isStop = false;
+				} //鼠标移出，继续滚动
+
+				cont.style.marginTop = 0;
+				cont.style.transition = 'margin 0.3s';
+				var startScroll = () => {
+					if (isStop) {
+						console.log("暂停中");
+					} else {
+						let hei = parseInt(cont.style.marginTop.replace("px", "")) || 0;
+						if (hei <= maxMargin) {
+							cont.style.transition = 'none'; //暂时关闭动画，让其直接滚动到顶
+							cont.style.marginTop = 0;
+							setTimeout(function() { //再打开动画
+								cont.style.transition = 'margin 0.3s';
+							}, 10)
+						} else {
+							cont.style.marginTop = parseInt(hei - rowHei) + "px";
+						}
+					}
+				}
+				setTimeout(fn => {
+					clearInterval(tbTimer);
+					tbTimer = setInterval(startScroll, speed);
+				}, delay)
+			} else { //dom还没渲染出来，给他再调用一下
+				setTimeout(e => {
+					this.cssScroll()
+				}, 666)
+			}
+
+		}
+		var tbTimer = null, //定时器
+			rowHei = 30, //每行行高
+			speed = 1500, //滚动速度/毫秒
+			delay = 1000; //开始滚动的延迟/毫秒
+
+		domReady(function() {
+			clearInterval(tbTimer);
+			cssScroll()
+		})
+	</script>
+</html>
