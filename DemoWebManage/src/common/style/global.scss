@@ -23,16 +23,29 @@
 			}
 		}
 	}
-  .pgTab{
-		/deep/ .ant-tabs-bar{
-			margin: 0;
-		}
-		/deep/ .ant-tabs-card-bar,
-	  /deep/ .ant-tabs-nav-container,
-	  /deep/ .ant-tabs-tab{
-			height: 28px !important;
-			line-height: 28px !important;
-			font-size: 12px;
+  // .pgTab{
+	// 	/deep/ .ant-tabs-bar{
+	// 		margin: 0;
+	// 	}
+	// 	/deep/ .ant-tabs-card-bar,
+	//   /deep/ .ant-tabs-nav-container,
+	//   /deep/ .ant-tabs-tab{
+	// 		height: 28px !important;
+	// 		line-height: 28px !important;
+	// 		font-size: 12px;
+	// 	}
+	// }
+	.pgTab{
+		:global {
+			.ant-tabs-bar{
+				margin: 0;
+			}
+			.ant-tabs-card-bar,
+			.ant-tabs-tab{
+				height: 28px !important;
+				line-height: 28px !important;
+				font-size: 12px !important;
+			}
 		}
 	}
 }

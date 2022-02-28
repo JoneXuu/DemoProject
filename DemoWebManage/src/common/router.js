@@ -22,7 +22,7 @@ const router = new VueRouter({
       component: (resolve) => require(['@/pages/Home.vue'], resolve),
       children: [
         {path: '/',name: 'HomeDefault',meta: {title: '首页',keepAlive: true},component: (resolve) => require(['@/pages/Admin/HomeDefault.vue'], resolve),},
-        {path: '/Module1',name: 'Module1',meta: {title: '模块1',keepAlive: true},component: (resolve) => require(['@/pages/Admin/ModuleOne.vue'], resolve),},
+        {path: '/Module1',name: 'Module1',meta: {title: '拖拽示例',keepAlive: true},component: (resolve) => require(['@/pages/Admin/ModuleOne.vue'], resolve),},
         {path: '/Module2',name: 'Module2',meta: {title: '模块2',keepAlive: true},component: (resolve) => require(['@/pages/Admin/ModuleTwo.vue'], resolve),},
         {path: '/ExamplePage',name: 'ExamplePage',meta: {title: '实例页面',keepAlive: true},component: (resolve) => require(['@/pages/Admin/ExamplePage.vue'], resolve),},
         {path: '/UserManage',name: 'UserManage',meta: {title: '用户管理',keepAlive: true},component: (resolve) => require(['@/pages/Admin/UserManage.vue'], resolve),},

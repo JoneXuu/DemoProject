@@ -12,9 +12,9 @@
         品牌名称
       </div>
 		  <a-menu theme="dark" mode="inline" :open-keys="openNavList"  @openChange="onOpenNav">
-			  <a-sub-menu :key="nav.MenuID" v-for="(nav,nInd) in NavBarData">
+			  <a-sub-menu :key="nav.MenuID" v-for="nav in NavBarData">
 				<span slot="title"><a-icon :type="nav.Icon" />{{nav.MenuTitle}}</span>
-				<a-menu-item :key="nChild.MenuID" v-for="(nChild,nChildInd) in nav.Children">
+				<a-menu-item :key="nChild.MenuID" v-for="nChild in nav.Children">
 				   <router-link :to="nChild.MenuPath">{{nChild.MenuTitle}}</router-link>
 				</a-menu-item>
 			  </a-sub-menu>
@@ -72,7 +72,7 @@
 						MenuID:100,
 						Children:[{
 							MenuID:101,
-							MenuTitle:"模块一",
+							MenuTitle:"模块一（拖拽示例）",
 							MenuPath:"/Module1",
 						},{
 							MenuID:102,
